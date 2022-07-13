@@ -24,5 +24,5 @@ const UserSchema = new Schema({
     }
 });
 const User = mongoose.model('user',UserSchema);
-User.createIndexes();
+// User.createIndexes();//we don't want to create index
 module.exports = User;
