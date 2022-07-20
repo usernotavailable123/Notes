@@ -74,18 +74,21 @@ router.post(
     try {
       //check if user exists??
       let user = await User.findOne({ email });
+      let success = true;
       if (!user) {
+        success = false;
         return res
           .status(400)
-          .json({ error: "Please try to login with correct credentials" });
+          .json({ error: "Please try to login with correct credentials",success });
       }
 
       //password comparison
       const passwordCompare = await bcrypt.compare(password, user.password); //returns true or false
       if (!passwordCompare) {
+        success = false;
         return res
           .status(400)
-          .json({ error: "Please try to login with correct credentials" });
+          .json({ error: "Please try to login with correct credentials",success });
       }
       //send user data
       const data = {
@@ -94,7 +97,8 @@ router.post(
         },
       };
       const authtoken = jwt.sign(data, JWT_SECRET);
-      res.json({ authtoken });
+      
+      res.json({ success,authtoken });
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Internal Server Error");
