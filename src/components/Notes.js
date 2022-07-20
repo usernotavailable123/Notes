@@ -68,14 +68,14 @@ const Notes = () => {
                   <label htmlFor="exampleInputEmail1" className="form-label">
                     Title
                   </label>
-                  <input
-                    type="text"
-                    className="form-control"
+                  <input type="text" className="form-control"
                     id="etitle"
                     name="etitle"
                     aria-describedby="emailHelp"
                     value={note.etitle}
                     onChange={onChange}
+                    minLength={5}
+                    required
                   />
                   <div id="emailHelp" className="form-text"></div>
                 </div>
@@ -90,6 +90,8 @@ const Notes = () => {
                     name="edescription"
                     value={note.edescription}
                     onChange={onChange}
+                    minLength={5}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -105,11 +107,7 @@ const Notes = () => {
                     onChange={onChange}
                   />
                 </div>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  onClick={handleClick}
-                >
+                <button type="submit" className="btn btn-primary" onClick={handleClick}>
                   Submit
                 </button>
               </form>
@@ -118,15 +116,18 @@ const Notes = () => {
               <button ref = {refClose} type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                 Close
               </button>
-              <button onClick={handleClick} type="button" className="btn btn-primary">
+              <button disabled={note.etitle.length<5 || note.edescription.length<5} onClick={handleClick} type="button" className="btn btn-primary">
                 Update Note
               </button>
             </div>
           </div>
         </div>
       </div>
-      <div className="row my-3">
+      <div className=" row my-3">
         <h2>Your Notes</h2>
+        <div className="container">
+          {notes.length ===0 && 'No notes to display'}
+        </div>
         {notes.map((note) => {
           return (
             <Noteitem note={note} updateNote={updateNote} key={note._id} />
